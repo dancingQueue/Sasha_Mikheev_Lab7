@@ -1,6 +1,4 @@
-package firsttaks;
-
-import firsttaks.Counter;
+package firsttask;
 
 /**
  * Created by alexandermiheev on 24.05.16.
