@@ -1,15 +1,17 @@
-package secondtask.subtaskone;
+package secondtask.subtasktwo;
+
+import java.util.concurrent.locks.Lock;
 
 /**
- * Created by alexandermiheev on 02.06.16.
+ * Created by alexandermiheev on 03.06.16.
  */
 public class Philosopher extends Thread {
-    private Fork leftFork;
-    private Fork rightFork;
+    private Lock leftFork;
+    private Lock rightFork;
 
     private Integer id;
 
-    public Philosopher(Integer id, Fork leftFork, Fork rightFork) {
+    public Philosopher(Integer id, Lock leftFork, Lock rightFork) {
         this.id = id;
         this.leftFork = leftFork;
         this.rightFork = rightFork;
@@ -24,24 +26,19 @@ public class Philosopher extends Thread {
         System.out.println("Philosopher " + id.toString() + " is eating");
     }
     private void think() {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            System.out.print(e.getMessage());
-        }
         System.out.println("Philosopher " + id.toString() + " is thinking");
     }
 
     public void run() {
         while (true) {
-            int hashFork1 = leftFork.hashCode();
-            int hashFork2 = rightFork.hashCode();
-
-            Fork tempFirstFork = null;
-            Fork tempSecondFork = null;
+            int hashLeftFork = leftFork.hashCode();
+            int hashRightFork = rightFork.hashCode();
 
 
-            if (hashFork1 < hashFork2) {
+            Lock tempFirstFork = null;
+            Lock tempSecondFork = null;
+
+            if (hashLeftFork < hashRightFork) {
                 tempFirstFork = leftFork;
                 tempSecondFork = rightFork;
             } else {
@@ -49,12 +46,13 @@ public class Philosopher extends Thread {
                 tempFirstFork = rightFork;
             }
 
-            synchronized (tempFirstFork) {
-                synchronized (tempSecondFork) {
-                    eat();
-                }
-            }
+            tempFirstFork.lock();
+            tempSecondFork.lock();
+            eat();
+            tempFirstFork.unlock();
+            tempSecondFork.unlock();
             think();
         }
     }
+
 }

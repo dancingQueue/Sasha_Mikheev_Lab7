@@ -1,16 +1,19 @@
-package secondtask.subtaskone;
+package secondtask.subtasktwo;
+
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Created by alexandermiheev on 02.06.16.
  */
 public class Main {
-    public static Fork[] forks;
     public static Philosopher[] philosophers;
+    public static Lock[] forks;
 
     public static void initForks(int size) {
-        forks = new Fork[size];
+        forks = new Lock[size];
         for (int i = 0; i < size; i++) {
-            forks[i] = new Fork();
+            forks[i] = new ReentrantLock();
         }
     }
 
